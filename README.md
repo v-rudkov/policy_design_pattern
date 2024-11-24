@@ -37,3 +37,8 @@ insert new Lead(
 
     ID leadId = '00Q9V00000K7KmTUAV';
     MyService.process(new Set<ID>{ leadId });
+
+Problems:
+    - filtering logic is not isolated (in the example above, part of it is in the selecting, another part is in the filtering)
+    - if a record doesn't meet the filtering criteria it's not obvious why
+    - this approach doesn't support bypassing filtering logic in an edge case scenario (where we deliberately want the service to process a record that formally doesn't meet the filtering criteria)
