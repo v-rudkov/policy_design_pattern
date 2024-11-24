@@ -1,18 +1,39 @@
-# Salesforce DX Project: Next Steps
+# Policy Design Patten
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+A typical service class:
 
-## How Do You Plan to Deploy Your Changes?
+```
+public class MyService {
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+    public static void process(Set<ID> leadIds) {
 
-## Configure Your Salesforce DX Project
+        // selecting
+        List<Lead> leads = [select Id, Company, FirstName, LastName, Email, AnnualRevenue from Lead where Industry = 'Finance'];
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+        // filtering
+        List<Lead> leadsToProcess = new List<Lead>();
+        for (Lead lead : leads) {
+            if (lead.Email != null && lead.AnnualRevenue > 1000000) {
+                leadsToProcess.add(lead);
+            }
+        }
 
-## Read All About It
+        // processing
+        Monitoring.log(leadsToProcess, new BillieException('Processing leads'));
+    }
+}
+```
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+```
+insert new Lead(
+    FirstName = 'John',
+    LastName = 'Doe',
+    Email = 'j.doe@example.com',
+    Company = 'Acme',
+    Industry = 'Finance',
+    AnnualRevenue = 2500000
+);
+```
+
+    ID leadId = '00Q9V00000K7KmTUAV';
+    MyService.process(new Set<ID>{ leadId });

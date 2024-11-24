@@ -2,11 +2,19 @@
   "packageDirectories": [
     {
       "path": "force-app",
-      "default": true
+      "default": true,
+      "dependencies": [
+        { 
+          "package": "monitoring@0.5.0"
+        }
+      ]
     }
   ],
   "name": "policy_design_pattern",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "59.0"
+  "sourceApiVersion": "59.0",
+  "packageAliases": {
+    "monitoring@0.5.0": "04taa000001XaTxAAK"
+  }
 }
