@@ -1,5 +1,7 @@
-public with sharing class Policy {
-    public Policy() {
+public interface Policy {
 
-    }
+    Boolean isValid(SObject record);
+
+    PolicyResult validate(SObject record);
+
 }
